@@ -98,7 +98,10 @@ ul
                                                   - var required =false
                                                   - var className =''
                                               tr(class=className)
-                                                  td.name=parameter.Name
+                                                  - if (parameter.Type =='text')
+                                                    td(style="vertical-align:top").name=parameter.Name
+                                                  - else
+                                                    td.name=parameter.Name
                                                   td.parameter
                                                       - if (parameter.Type =='enumerated')
                                                           select(name='params[' + parameter.Name + ']', placeholder=className)
@@ -118,13 +121,28 @@ ul
                                                                            option(value=choice, selected=true) #{choice}
                                                                    - else
                                                                            option(value=choice) #{choice}
+                                                      - else if (parameter.Type =='text')
+                                                        textarea(name='params[' + parameter.Name + ']', value=parameter.Default, placeholder=className, style='height:345px; width:470px')
                                                       - else
                                                           input(name='params[' + parameter.Name + ']', value=parameter.Default, placeholder=className)
                                                           input(type='hidden', name='locations['+parameter.Name+']', value=parameter.Location || 'query')
-                                                  td.type=parameter.Type
-                                                  td.location
+                                                  - if (parameter.Type =='text')
+                                                    td(style="vertical-align:top").type=parameter.Type
+                                                  - else
+                                                    td.type=parameter.Type
+
+
+                                                  - if (parameter.Type =='text')
+                                                    td(style="vertical-align:top").location
                                                       p=parameter.Location || 'query'
-                                                  td.description
+                                                  - else
+                                                    td.location
+                                                      p=parameter.Location || 'query'
+
+                                                  - if (parameter.Type =='text')
+                                                        td(style="vertical-align:top").description=parameter.Description
+                                                  - else
+                                                        td.description=parameter.Description
                                                       p=parameter.Description || 'No description'
                                                       - if (parameter.Type =='enumerated' && parameter.EnumeratedDescription)
                                                           dl.clearfix
